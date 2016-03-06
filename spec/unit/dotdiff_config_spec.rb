@@ -33,4 +33,22 @@ RSpec.describe 'Dotdiff configuration' do
       expect(subject.raise_error_on_diff).to be_falsey
     end
   end
+
+  describe '#image_store_path' do
+    let(:path) { '/tmp/image_store_path' }
+
+    it 'returns the user set value' do
+      DotDiff.image_store_path = path
+      expect(subject.image_store_path).to eq path
+    end
+  end
+
+  describe '#failure_image_path' do
+    let(:path) { '/tmp/failed_image_store' }
+
+    it 'returns the user set value' do
+      DotDiff.failure_image_path   = path
+      expect(subject.failure_image_path).to eq path
+    end
+  end
 end
