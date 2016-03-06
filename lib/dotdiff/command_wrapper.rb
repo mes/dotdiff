@@ -4,8 +4,8 @@ module DotDiff
   class CommandWrapper
     attr_reader :message
 
-    def run(base, new)
-      output = `#{command(base, new)}`
+    def run(base_image, new_image)
+      output = `#{command(base_image, new_image)}`
 
       if output.empty?
         @failed = false
@@ -25,8 +25,9 @@ module DotDiff
 
     private
 
-    def command(base, new)
-      "#{DotDiff.perceptual_diff_bin} #{Shellwords.escape(base)} #{Shellwords.escape(new)}"
+    def command(base_image, new_image)
+      "#{DotDiff.perceptual_diff_bin} #{Shellwords.escape(base_image)} "\
+        "#{Shellwords.escape(new_image)}"
     end
   end
 end

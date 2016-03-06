@@ -4,14 +4,14 @@ RSpec.describe DotDiff::CommandWrapper do
   subject { DotDiff::CommandWrapper.new }
   before  { DotDiff.perceptual_diff_bin = '/bin/echo' }
 
-  let(:base) { '/home/test/image 12343.png' }
-  let(:new)  { '/home/test/compare_1234 3.png' }
+  let(:base_img) { '/home/test/image 12343.png' }
+  let(:new_img)  { '/home/test/compare_1234 3.png' }
 
   describe '#command' do
     let(:escaped_cmd) { "/bin/echo /home/test/image\\ 12343.png /home/test/compare_1234\\ 3.png" }
 
     it 'escapes both base and new file names' do
-      expect(subject.send(:command, base, new)).to eq escaped_cmd
+      expect(subject.send(:command, base_img, new_img)).to eq escaped_cmd
     end
   end
 
