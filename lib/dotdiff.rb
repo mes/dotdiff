@@ -1,7 +1,10 @@
 require 'dotdiff/version'
+
 require 'shellwords'
+require 'tmpdir'
 
 require 'dotdiff/command_wrapper'
+require 'dotdiff/image'
 
 module DotDiff
  class << self

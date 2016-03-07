@@ -6,6 +6,7 @@ module DotDiff
 
     def run(base_image, new_image)
       output = `#{command(base_image, new_image)}`
+      @ran_checks = true
 
       if output.empty?
         @failed = false
@@ -16,11 +17,15 @@ module DotDiff
     end
 
     def passed?
-      !failed
+      !failed?
     end
 
     def failed?
-      @failed
+      @ran_checks && @failed
+    end
+
+    def ran_checks
+      @ran_checks
     end
 
     private
