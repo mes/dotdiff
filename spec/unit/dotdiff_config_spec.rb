@@ -23,17 +23,6 @@ RSpec.describe 'Dotdiff configuration' do
     end
   end
 
-  describe '#raise_error_on_diff' do
-    it 'returns true when not set' do
-      expect(subject.raise_error_on_diff).to be_truthy
-    end
-
-    it 'returns the user defined value' do
-      subject.raise_error_on_diff = false
-      expect(subject.raise_error_on_diff).to be_falsey
-    end
-  end
-
   describe '#image_store_path' do
     let(:path) { '/tmp/image_store_path' }
 

@@ -5,15 +5,11 @@ require 'dotdiff/command_wrapper'
 
 module DotDiff
  class << self
-   attr_accessor :perceptual_diff_bin, :raise_error_on_diff, :resave_base_image,
-                 :failure_image_path, :image_store_path
+   attr_accessor :perceptual_diff_bin, :resave_base_image, :failure_image_path,
+                 :image_store_path, :overwrite_on_resave
 
    def configure
      yield self
-   end
-
-   def raise_error_on_diff
-     @raise_error_on_diff.nil? ? true : @raise_error_on_diff
    end
 
    def resave_base_image
