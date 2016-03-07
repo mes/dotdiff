@@ -109,19 +109,30 @@ RSpec.describe DotDiff::Image do
 
     context 'when resave_base_image is false' do
       let(:command_wrapper) { DotDiff::CommandWrapper.new }
+      let(:elem_handler) { DotDiff::ElementHandler.new(subject.driver) }
 
       before do
         allow(subject).to receive(:resave_base_image).and_return(false)
         allow(subject).to receive(:capture_from_browser).and_return('/tmp/S/blah.png')
         allow(DotDiff::CommandWrapper).to receive(:new).and_return(command_wrapper)
+
+        command_wrapper.instance_variable_set('@ran_checks', true)
+        command_wrapper.instance_variable_set('@failed', false)
+      end
+
+      it 'calls element handler' do
+        expect(DotDiff::ElementHandler).to receive(:new)
+          .with(subject.driver).once.and_return(elem_handler)
+
+        expect_any_instance_of(DotDiff::ElementHandler).to receive(:hide).once
+        expect_any_instance_of(DotDiff::ElementHandler).to receive(:show).once
+        expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
+          .with('/tmp/T/test.png', '/tmp/S/blah.png').once
+
+        subject.compare
       end
 
       context 'when images match' do
-        before do
-          command_wrapper.instance_variable_set('@ran_checks', true)
-          command_wrapper.instance_variable_set('@failed', false)
-        end
-
         it 'calls command wrapper' do
           expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
            .with('/tmp/T/test.png', '/tmp/S/blah.png').once
