@@ -19,8 +19,12 @@ module DotDiff
         path = capture_and_resave_base_image
         outcome = [true, path]
       else
+        element_handler = ElementHandler.new(driver)
         result = CommandWrapper.new
+
+        element_handler.hide
         result.run(base_image_file, capture_from_browser)
+        element_handler.show
 
         outcome = [result.passed?, result.message]
       end
