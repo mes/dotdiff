@@ -126,7 +126,7 @@ RSpec.describe DotDiff::Image do
           expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
            .with('/tmp/T/test.png', '/tmp/S/blah.png').once
 
-          expect(subject.compare).to eq command_wrapper
+          expect(subject.compare).to eq [true, nil]
         end
       end
 
@@ -134,13 +134,14 @@ RSpec.describe DotDiff::Image do
         before do
           command_wrapper.instance_variable_set('@ran_checks', true)
           command_wrapper.instance_variable_set('@failed', true)
+          command_wrapper.instance_variable_set('@message', 'FAILED: 120px pixel different')
         end
 
         it 'returns false' do
           expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
            .with('/tmp/T/test.png', '/tmp/S/blah.png').once
 
-          expect(subject.compare).to eq command_wrapper
+          expect(subject.compare).to eq [false, 'FAILED: 120px pixel different']
         end
       end
     end

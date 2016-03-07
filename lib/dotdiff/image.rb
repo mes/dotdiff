@@ -13,12 +13,16 @@ module DotDiff
     end
 
     def compare
-      outcome = CommandWrapper.new
+      outcome = []
 
       if resave_base_image
-        capture_and_resave_base_image
+        path = capture_and_resave_base_image
+        outcome = [true, path]
       else
-        outcome.run(base_image_file, capture_from_browser)
+        result = CommandWrapper.new
+        result.run(base_image_file, capture_from_browser)
+
+        outcome = [result.passed?, result.message]
       end
 
       outcome
