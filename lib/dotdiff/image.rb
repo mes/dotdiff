@@ -15,16 +15,25 @@ module DotDiff
     def compare
       outcome = []
 
-      if resave_base_image
+      if !File.exists?(base_image_file) || resave_base_image
         path = capture_and_resave_base_image
         outcome = [true, path]
       else
         element_handler = ElementHandler.new(driver)
+        compare_to_image = capture_from_browser
         result = CommandWrapper.new
 
         element_handler.hide
-        result.run(base_image_file, capture_from_browser)
+        result.run(base_image_file, compare_to_image)
         element_handler.show
+
+        if result.failed? && DotDiff.failure_image_path
+          FileUtils.mkdir_p(File.join(DotDiff.failure_image_path, subdir.to_s))
+          file_name = File.basename(compare_to_image)
+
+          FileUtils.mv(compare_to_image,
+            File.join(DotDiff.failure_image_path, subdir.to_s, file_name), force: true)
+        end
 
         outcome = [result.passed?, result.message]
       end
@@ -41,6 +50,10 @@ module DotDiff
     end
 
     private
+
+    def move_failure_image
+
+    end
 
     def capture_from_browser
       name = file_name
