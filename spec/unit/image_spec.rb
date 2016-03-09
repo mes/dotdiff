@@ -13,6 +13,7 @@ RSpec.describe DotDiff::Image do
 
   before do
     DotDiff.image_store_path = '/tmp'
+    DotDiff.failure_image_path = '/tmp/fails'
     DotDiff.resave_base_image = true
     allow(File).to receive(:exists?).with(base_file).and_return(true)
   end
@@ -149,6 +150,7 @@ RSpec.describe DotDiff::Image do
           expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
            .with('/tmp/T/test.png', '/tmp/S/blah.png').once
 
+          expect(FileUtils).to receive(:mv).exactly(0).times
           expect(subject.compare).to eq [true, nil]
         end
       end
@@ -163,6 +165,13 @@ RSpec.describe DotDiff::Image do
         it 'returns false' do
           expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
            .with('/tmp/T/test.png', '/tmp/S/blah.png').once
+
+          allow(subject).to receive(:capture_from_browser).and_return('/tmp/S/blah.png')
+
+          #Should be a test without subdir...
+          expect(FileUtils).to receive(:mkdir_p).with('/tmp/fails/T').once
+          expect(FileUtils).to receive(:mv)
+            .with('/tmp/S/blah.png', '/tmp/fails/T/blah.png', force: true)
 
           expect(subject.compare).to eq [false, 'FAILED: 120px pixel different']
         end
