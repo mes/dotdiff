@@ -8,7 +8,7 @@ RSpec.describe DotDiff::CommandWrapper do
   let(:new_img)  { '/home/test/compare_1234 3.png' }
 
   describe '#command' do
-    let(:escaped_cmd) { "/bin/echo /home/test/image\\ 12343.png /home/test/compare_1234\\ 3.png" }
+    let(:escaped_cmd) { "/bin/echo /home/test/image\\ 12343.png /home/test/compare_1234\\ 3.png -verbose" }
 
     it 'escapes both base and new file names' do
       expect(subject.send(:command, base_img, new_img)).to eq escaped_cmd
@@ -16,19 +16,17 @@ RSpec.describe DotDiff::CommandWrapper do
   end
 
   describe '#run' do
-    context 'when no stdout' do
       it 'assigns false to failed variable' do
-        subject.run('', '')
+        subject.run('PASS: They are the same', '')
         expect(subject.failed?).to eq false
       end
-    end
 
-    context 'when stdout present' do
-      before { subject.run('FAILED:', "haha\ngood") }
+    context 'when it fails' do
+      before { subject.run('FAIL:', "haha\ngood") }
 
-      it 'assigns true to failed stdout to message' do
+      it 'assigns true to failed when stdout has FAIL' do
         expect(subject.failed?).to be_truthy
-        expect(subject.message).to eq "FAILED: haha good"
+        expect(subject.message).to eq "FAIL: haha good -verbose"
       end
     end
 

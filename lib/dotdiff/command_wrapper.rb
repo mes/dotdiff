@@ -6,12 +6,13 @@ module DotDiff
 
     def run(base_image, new_image)
       output = `#{command(base_image, new_image)}`
+
       @ran_checks = true
 
-      if output.empty?
+      if output.include?('PASS:')
         @failed = false
       else
-        @failed = output.include?('FAILED')
+        @failed = true
         @message = output.split("\n").join(' ')
       end
     end
@@ -32,7 +33,7 @@ module DotDiff
 
     def command(base_image, new_image)
       "#{DotDiff.perceptual_diff_bin} #{Shellwords.escape(base_image)} "\
-        "#{Shellwords.escape(new_image)}"
+        "#{Shellwords.escape(new_image)} -verbose"
     end
   end
 end

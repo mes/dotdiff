@@ -19,7 +19,6 @@ module DotDiff
         path = capture_and_resave_base_image
         outcome = [true, path]
       else
-        element_handler = ElementHandler.new(driver)
         compare_to_image = capture_from_browser
         result = CommandWrapper.new
 
@@ -52,10 +51,16 @@ module DotDiff
     end
 
     private
+    def element_handler
+      @elemnt_handler ||= ElementHandler.new(driver)
+    end
 
     def capture_from_browser
       tmp_screenshot_file = File.join(Dir.tmpdir, File.basename(base_image_file))
+
+      element_handler.hide
       driver.save_screenshot(tmp_screenshot_file)
+      element_handler.show
 
       tmp_screenshot_file
     end
