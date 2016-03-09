@@ -9,7 +9,7 @@ RSpec.describe DotDiff::Image do
   subject { DotDiff::Image.new(opts) }
   let(:mockdriver) { MockDriver.new }
   let(:base_file) { '/tmp/T/test.png' }
-  let(:opts) {{ driver: mockdriver, resave_base_image: true, subdir: 'T', file_name: 'test.png' }}
+  let(:opts) {{ driver: mockdriver, resave_base_image: true, subdir: 'T', file_name: 'test' }}
 
   before do
     DotDiff.image_store_path = '/tmp'
@@ -27,7 +27,7 @@ RSpec.describe DotDiff::Image do
       expect(subject.driver).to eq mockdriver
       expect(subject.resave_base_image).to eq true
       expect(subject.subdir).to eq 'T'
-      expect(subject.file_name).to eq 'test.png'
+      expect(subject.file_name).to eq 'test'
     end
   end
 

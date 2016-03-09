@@ -46,15 +46,15 @@ module DotDiff
     end
 
     def base_image_file
+      @file_name = "#{file_name}.png" unless file_name.include?('.png')
+
       File.join(DotDiff.image_store_path, subdir.to_s, file_name)
     end
 
     private
 
     def capture_from_browser
-      name = file_name
-      name = "#{file_name}.png" unless file_name.include?('.png')
-      tmp_screenshot_file = File.join(Dir.tmpdir, name)
+      tmp_screenshot_file = File.join(Dir.tmpdir, File.basename(base_image_file))
       driver.save_screenshot(tmp_screenshot_file)
 
       tmp_screenshot_file
