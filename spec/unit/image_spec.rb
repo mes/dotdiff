@@ -8,11 +8,13 @@ end
 RSpec.describe DotDiff::Image do
   subject { DotDiff::Image.new(opts) }
   let(:mockdriver) { MockDriver.new }
+  let(:base_file) { '/tmp/T/test.png' }
   let(:opts) {{ driver: mockdriver, resave_base_image: true, subdir: 'T', file_name: 'test.png' }}
 
   before do
     DotDiff.image_store_path = '/tmp'
     DotDiff.resave_base_image = true
+    allow(File).to receive(:exists?).with(base_file).and_return(true)
   end
 
   describe '#initialize' do
@@ -67,7 +69,6 @@ RSpec.describe DotDiff::Image do
 
     context 'when overwrite on resave' do
       before { DotDiff.overwrite_on_resave = true }
-      let(:base_file) { subject.base_image_file }
 
       it 'calls FileUtils with force option' do
         allow(subject).to receive(:capture_from_browser).and_return('/tmp/S/shot.png')
@@ -80,7 +81,7 @@ RSpec.describe DotDiff::Image do
     context 'when overwrite on resave false' do
       before { DotDiff.overwrite_on_resave = false }
       let(:newfile) { '/tmp/A/shot1.png' }
-      let(:altered_file) { "#{subject.base_image_file}.r2" }
+      let(:altered_file) { "#{base_file}.r2" }
 
       it 'calls FileUtils with an altered file name destination' do
         allow(subject).to receive(:capture_from_browser).and_return('/tmp/A/shot1.png')
@@ -91,7 +92,7 @@ RSpec.describe DotDiff::Image do
       it 'creates base_image_file without r2 when original file doesnt exist' do
         allow(File).to receive(:exists?).and_return(false)
         allow(subject).to receive(:capture_from_browser).and_return('/tmp/A/shot1.png')
-        expect(FileUtils).to receive(:mv).with(newfile, subject.base_image_file, force: true)
+        expect(FileUtils).to receive(:mv).with(newfile, base_file, force: true)
         subject.send(:capture_and_resave_base_image)
       end
     end
@@ -101,6 +102,16 @@ RSpec.describe DotDiff::Image do
     context 'when resave_base_image is true' do
       it 'calls capture_and_resave_base_image' do
         allow(subject).to receive(:resave_base_image).and_return(true)
+        expect(subject).to receive(:capture_and_resave_base_image).once
+
+        subject.compare
+      end
+    end
+
+    context 'when the base_image_file doesnt exist and resave false' do
+      it 'calls capture_and_resave_base_image' do
+        allow(subject).to receive(:resave_base_image).and_return(false)
+        expect(File).to receive(:exists?).with(base_file).and_return(false)
         expect(subject).to receive(:capture_and_resave_base_image).once
 
         subject.compare
@@ -118,6 +129,7 @@ RSpec.describe DotDiff::Image do
 
         command_wrapper.instance_variable_set('@ran_checks', true)
         command_wrapper.instance_variable_set('@failed', false)
+
       end
 
       it 'calls element handler' do

@@ -15,7 +15,7 @@ module DotDiff
     def compare
       outcome = []
 
-      if resave_base_image
+      if !File.exists?(base_image_file) || resave_base_image
         path = capture_and_resave_base_image
         outcome = [true, path]
       else
