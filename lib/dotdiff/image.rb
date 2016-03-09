@@ -51,10 +51,6 @@ module DotDiff
 
     private
 
-    def move_failure_image
-
-    end
-
     def capture_from_browser
       name = file_name
       name = "#{file_name}.png" unless file_name.include?('.png')
