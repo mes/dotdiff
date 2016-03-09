@@ -18,10 +18,10 @@ RSpec.describe 'DotDiff::ElementHandler' do
   describe '#hide' do
     it 'calls execute_script adding css class' do
       expect_any_instance_of(MockDriver).to receive(:execute_script)
-        .with("document.getElementByClassName('master-opt')[0].classList.add('hidden')").once
+        .with("document.getElementByClassName('master-opt')[0].style.visibility = 'hidden'").once
 
       expect_any_instance_of(MockDriver).to receive(:execute_script)
-        .with("document.getElementById('user-links').classList.add('hidden')").once
+        .with("document.getElementById('user-links').style.visibility = 'hidden'").once
 
       subject.hide
     end
@@ -30,10 +30,10 @@ RSpec.describe 'DotDiff::ElementHandler' do
   describe '#show' do
     it 'calls execute_script removing css class' do
       expect_any_instance_of(MockDriver).to receive(:execute_script)
-        .with("document.getElementByClassName('master-opt')[0].classList.remove('hidden')").once
+        .with("document.getElementByClassName('master-opt')[0].style.visibility = ''").once
 
       expect_any_instance_of(MockDriver).to receive(:execute_script)
-        .with("document.getElementById('user-links').classList.remove('hidden')").once
+        .with("document.getElementById('user-links').style.visibility = ''").once
 
       subject.show
     end
