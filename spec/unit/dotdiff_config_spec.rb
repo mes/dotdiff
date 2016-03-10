@@ -41,17 +41,6 @@ RSpec.describe 'Dotdiff configuration' do
     end
   end
 
-  describe '#hide_element_css_name' do
-    it 'defaults to hidden' do
-      expect(subject.hide_element_css_name).to eq 'hidden'
-    end
-
-    it 'returns the user set value' do
-      DotDiff.hide_element_css_name = 'hide'
-      expect(subject.hide_element_css_name).to eq 'hide'
-    end
-  end
-
   describe '#js_elements_to_hide' do
     let(:elems) { ["document.findElementByid('f')", ""] }
     it 'defaults to an empty array' do
