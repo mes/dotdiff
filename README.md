@@ -91,4 +91,4 @@ The gem is available as open source under the terms of the [MIT License](http://
 Its not fully completed yet but is usable in its current state.
  - Improve the message output to extract just the fail line
  - Add an integration spec
- - Other things as it crops up
+ - Support multi browser resolutions and handle in the file name
