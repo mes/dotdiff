@@ -51,6 +51,7 @@ module DotDiff
     end
 
     private
+
     def element_handler
       @elemnt_handler ||= ElementHandler.new(driver)
     end

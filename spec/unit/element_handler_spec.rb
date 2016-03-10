@@ -38,4 +38,17 @@ RSpec.describe 'DotDiff::ElementHandler' do
       subject.show
     end
   end
+
+  describe '#elements' do
+    before { DotDiff.js_elements_to_hide = nil }
+
+    it 'returns an empty array when not set' do
+      expect(subject.elements).to eq []
+    end
+
+    it 'returns the user set value js_elements_to_hide' do
+      DotDiff.js_elements_to_hide = ['blah', 'blue']
+      expect(subject.elements).to eq ['blah', 'blue']
+    end
+  end
 end
