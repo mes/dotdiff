@@ -5,12 +5,13 @@ require 'dotdiff/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "dotdiff"
-  spec.version       = Dotdiff::VERSION
+  spec.version       = DotDiff::VERSION
   spec.authors       = ["Jon Normington"]
   spec.email         = ["jnormington@users.noreply.github.com"]
 
-  spec.summary       = "Preceptual diff wrapper for capybara and rspec regression specs"
-  spec.description   = "Creating base_image and generating new images to compare to"
+  spec.summary       = "Preceptual diff wrapper for capybara and rspec image regression specs"
+  spec.description   = [spec.summary, "which is great for graphs and charts where checking"\
+                                      "the DOM is either impossible to not worth it."].join(' ')
   spec.homepage      = "https://github.com/jnormington/dotdiff"
   spec.license       = "MIT"
 
