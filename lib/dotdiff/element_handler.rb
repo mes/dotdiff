@@ -9,14 +9,22 @@ module DotDiff
 
     def hide
       elements.each do |elem|
-        driver.execute_script("#{elem}.style.visibility = 'hidden'")
+        if element_exists?(elem)
+          driver.execute_script("#{elem}.style.visibility = 'hidden'")
+        end
       end
     end
 
     def show
       elements.each do |elem|
-        driver.execute_script("#{elem}.style.visibility = ''")
+        if element_exists?(elem)
+          driver.execute_script("#{elem}.style.visibility = ''")
+        end
       end
+    end
+
+    def element_exists?(element)
+      driver.evaluate_script("#{element} != undefined")
     end
 
     def elements
