@@ -30,7 +30,7 @@ module DotDiff
 
     def element_exists?(xpath)
       # TODO: Allow custom overriding beyond Capybara.default_max_wait_time
-      driver.find(:xpath, xpath, wait: 5) rescue nil
+      driver.find(:xpath, xpath, wait: 2, visible: :all) rescue nil
     end
 
     def elements
