@@ -6,6 +6,9 @@ class MockDriver
 
   def evaluate_script(str)
   end
+
+  def find(x,f, args)
+  end
 end
 
 RSpec.describe 'DotDiff::ElementHandler' do
@@ -13,20 +16,27 @@ RSpec.describe 'DotDiff::ElementHandler' do
 
   before do
     allow(DotDiff).to receive(:js_elements_to_hide).and_return([
-      "document.getElementByClassName('master-opt')[0]",
-      "document.getElementById('user-links')"
+      "//nav[@class='master-opt']",
+      "id('user-links')"
     ])
   end
 
   describe '#hide' do
+    let(:command1) do
+      "document.evaluate(\"//nav[@class='master-opt']\", document, null"\
+      ", XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.style.visibility = 'hidden'"
+    end
+
+    let(:command2) do
+      "document.evaluate(\"id('user-links')\", document, null"\
+      ", XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.style.visibility = 'hidden'"
+    end
+
     it 'calls execute_script setting the visibility to hidden' do
       allow(subject).to receive(:element_exists?).and_return(true)
 
-      expect_any_instance_of(MockDriver).to receive(:execute_script)
-        .with("document.getElementByClassName('master-opt')[0].style.visibility = 'hidden'").once
-
-      expect_any_instance_of(MockDriver).to receive(:execute_script)
-        .with("document.getElementById('user-links').style.visibility = 'hidden'").once
+      expect_any_instance_of(MockDriver).to receive(:execute_script).with(command1).once
+      expect_any_instance_of(MockDriver).to receive(:execute_script).with(command2).once
 
       subject.hide
     end
@@ -42,14 +52,21 @@ RSpec.describe 'DotDiff::ElementHandler' do
   end
 
   describe '#show' do
+    let(:command1) do
+      "document.evaluate(\"//nav[@class='master-opt']\", document, null"\
+      ", XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.style.visibility = ''"
+    end
+
+    let(:command2) do
+      "document.evaluate(\"id('user-links')\", document, null"\
+      ", XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.style.visibility = ''"
+    end
+
     it 'calls execute_script when setting the visibility to show' do
       allow(subject).to receive(:element_exists?).and_return(true)
 
-      expect_any_instance_of(MockDriver).to receive(:execute_script)
-        .with("document.getElementByClassName('master-opt')[0].style.visibility = ''").once
-
-      expect_any_instance_of(MockDriver).to receive(:execute_script)
-        .with("document.getElementById('user-links').style.visibility = ''").once
+      expect_any_instance_of(MockDriver).to receive(:execute_script).with(command1).once
+      expect_any_instance_of(MockDriver).to receive(:execute_script).with(command2).once
 
       subject.show
     end
@@ -68,9 +85,9 @@ RSpec.describe 'DotDiff::ElementHandler' do
   end
 
   describe '#element_hidden?' do
-    it 'call evalute script' do
-      expect_any_instance_of(MockDriver).to receive(:evaluate_script).with('blah != undefined').once
-      subject.element_exists?('blah')
+    it 'calls find with xpath' do
+      expect_any_instance_of(MockDriver).to receive(:find).with(:xpath, '//nav', wait: 5).once
+      subject.element_exists?('//nav')
     end
   end
 end
