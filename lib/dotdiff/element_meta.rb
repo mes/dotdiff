@@ -33,7 +33,7 @@ module DotDiff
       private
 
       def js_query(xpath)
-        "document.evaluate(\"{xpath}\", document, null, XPathResult."\
+        "document.evaluate(\"#{xpath}\", document, null, XPathResult."\
         "FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.getBoundingClientRect()"
       end
 

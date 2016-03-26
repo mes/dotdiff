@@ -67,9 +67,11 @@ RSpec.describe DotDiff::ElementMeta do
     end
 
     describe '#js_query' do
+      let(:xpath) { '/html/body/div/div/input' }
+
       it 'returns a string with xpath' do
-        expect(subject.send(:js_query, '/html/body/div/div/input')).to eq(
-          "document.evaluate(\"{xpath}\", document, null, "\
+        expect(subject.send(:js_query, xpath)).to eq(
+          "document.evaluate(\"#{xpath}\", document, null, "\
           "XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.getBoundingClientRect()"
         )
       end
