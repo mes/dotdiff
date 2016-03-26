@@ -125,12 +125,12 @@ RSpec.describe DotDiff::Image do
 
       before do
         allow(subject).to receive(:resave_base_image).and_return(false)
-        allow(subject).to receive(:capture_from_browser).and_return('/tmp/S/blah.png')
+        allow(mockdriver).to receive(:save_screenshot).with('/tmp/S/test.png')
+        allow(Dir).to receive(:tmpdir).and_return('/tmp/S')
         allow(DotDiff::CommandWrapper).to receive(:new).and_return(command_wrapper)
 
         command_wrapper.instance_variable_set('@ran_checks', true)
         command_wrapper.instance_variable_set('@failed', false)
-
       end
 
       it 'calls element handler' do
@@ -140,7 +140,7 @@ RSpec.describe DotDiff::Image do
         expect_any_instance_of(DotDiff::ElementHandler).to receive(:hide).once
         expect_any_instance_of(DotDiff::ElementHandler).to receive(:show).once
         expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
-          .with('/tmp/T/test.png', '/tmp/S/blah.png').once
+          .with('/tmp/T/test.png', '/tmp/S/test.png').once
 
         subject.compare
       end
@@ -148,7 +148,7 @@ RSpec.describe DotDiff::Image do
       context 'when images match' do
         it 'calls command wrapper' do
           expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
-           .with('/tmp/T/test.png', '/tmp/S/blah.png').once
+           .with('/tmp/T/test.png', '/tmp/S/test.png').once
 
           expect(FileUtils).to receive(:mv).exactly(0).times
           expect(subject.compare).to eq [true, nil]

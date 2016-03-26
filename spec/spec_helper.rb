@@ -1,4 +1,5 @@
 require 'dotdiff'
+require 'capybara/dsl'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
