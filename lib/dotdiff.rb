@@ -15,7 +15,7 @@ require 'dotdiff/comparer'
 module DotDiff
  class << self
    attr_accessor :perceptual_diff_bin, :resave_base_image, :failure_image_path,
-                 :image_store_path, :overwrite_on_resave, :js_elements_to_hide,
+                 :image_store_path, :overwrite_on_resave, :xpath_elements_to_hide,
                  :max_wait_time
 
    def configure
@@ -26,8 +26,8 @@ module DotDiff
      @resave_base_image ||= false
    end
 
-   def js_elements_to_hide
-     @js_elements_to_hide ||= []
+   def xpath_elements_to_hide
+     @xpath_elements_to_hide ||= []
    end
 
     def max_wait_time

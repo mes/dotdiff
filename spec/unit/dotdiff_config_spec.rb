@@ -41,15 +41,15 @@ RSpec.describe 'Dotdiff configuration' do
     end
   end
 
-  describe '#js_elements_to_hide' do
+  describe '#xpath_elements_to_hide' do
     let(:elems) { ["document.findElementByid('f')", ""] }
     it 'defaults to an empty array' do
-      expect(subject.js_elements_to_hide).to eq []
+      expect(subject.xpath_elements_to_hide).to eq []
     end
 
     it 'returns the user elements' do
-      DotDiff.js_elements_to_hide = elems
-      expect(subject.js_elements_to_hide).to eq elems
+      DotDiff.xpath_elements_to_hide = elems
+      expect(subject.xpath_elements_to_hide).to eq elems
     end
   end
 

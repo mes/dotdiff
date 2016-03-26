@@ -15,7 +15,7 @@ RSpec.describe 'DotDiff::ElementHandler' do
   subject { DotDiff::ElementHandler.new(MockDriver.new) }
 
   before do
-    allow(DotDiff).to receive(:js_elements_to_hide).and_return([
+    allow(DotDiff).to receive(:xpath_elements_to_hide).and_return([
       "//nav[@class='master-opt']",
       "id('user-links')"
     ])
@@ -74,12 +74,12 @@ RSpec.describe 'DotDiff::ElementHandler' do
 
   describe '#elements' do
     it 'returns an empty array when not set' do
-      allow(DotDiff).to receive(:js_elements_to_hide).and_return(nil)
+      allow(DotDiff).to receive(:xpath_elements_to_hide).and_return(nil)
       expect(subject.elements).to eq []
     end
 
-    it 'returns the user set value js_elements_to_hide' do
-      allow(DotDiff).to receive(:js_elements_to_hide).and_return(['blah', 'blue'])
+    it 'returns the user set value xpath_elements_to_hide' do
+      allow(DotDiff).to receive(:xpath_elements_to_hide).and_return(['blah', 'blue'])
       expect(subject.elements).to eq ['blah', 'blue']
     end
   end

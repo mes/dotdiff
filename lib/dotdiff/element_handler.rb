@@ -2,7 +2,7 @@ module DotDiff
   class ElementHandler
     attr_accessor :driver
 
-    def initialize(driver, elements = DotDiff.js_elements_to_hide)
+    def initialize(driver, elements = DotDiff.xpath_elements_to_hide)
       @driver = driver
       @elements = elements
     end
