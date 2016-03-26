@@ -21,7 +21,7 @@ module DotDiff
     private
 
     def compare_element(element_meta = ElementMeta.new(page, element))
-      snapshot.capture_from_browser
+      snapshot.capture_from_browser(false, nil)
       snapshot.crop_and_resave(element_meta)
 
       if !File.exists?(snapshot.basefile)

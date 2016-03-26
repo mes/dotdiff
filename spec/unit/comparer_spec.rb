@@ -53,7 +53,7 @@ RSpec.describe DotDiff::Comparer do
 
     context 'file exists' do
       it 'calls compare with cropped file location' do
-        expect(snapshot).to receive(:capture_from_browser).once
+        expect(snapshot).to receive(:capture_from_browser).with(false,nil).once
         expect(snapshot).to receive(:crop_and_resave).with(element_meta).once
         expect(File).to receive(:exists?).with(snapshot.basefile).and_return(true)
         expect(subject).to receive(:compare).with(
@@ -66,7 +66,7 @@ RSpec.describe DotDiff::Comparer do
 
     context 'file doesnt exist' do
       it 'calls resave_cropped_file and returns true result' do
-        expect(snapshot).to receive(:capture_from_browser).once
+        expect(snapshot).to receive(:capture_from_browser).with(false, nil).once
         expect(snapshot).to receive(:crop_and_resave).with(element_meta).once
         expect(File).to receive(:exists?).with(snapshot.basefile).and_return(false)
         expect(snapshot).to receive(:resave_cropped_file).once
