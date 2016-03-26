@@ -2,6 +2,7 @@ require 'dotdiff/version'
 
 require 'shellwords'
 require 'tmpdir'
+require 'fileutils'
 
 require 'dotdiff/command_wrapper'
 require 'dotdiff/element_handler'
