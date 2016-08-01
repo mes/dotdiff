@@ -26,15 +26,15 @@ module DotDiff
       File.join(rootdir, subdir.to_s, base_filename)
     end
 
-    def base_filename(with_extention=true)
+    def base_filename(with_extension=true)
       filename  = File.basename(@base_filename)
       extension = File.extname(filename)
       rtn_file  = @base_filename
 
-      if with_extention
+      if with_extension
         rtn_file = "#{@base_filename}.#{IMAGE_EXT}" if extension.empty?
       else
-        rtn_file = @base_filename.sub(ext, '') unless extension.empty?
+        rtn_file = @base_filename.sub(extension, '') unless extension.empty?
       end
 
       rtn_file
