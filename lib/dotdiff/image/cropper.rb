@@ -1,11 +1,10 @@
-require 'chunky_png'
+require 'rmagick'
 
 module DotDiff
   module Image
     module Cropper
       def crop_and_resave(element)
         image = load_image(fullscreen_file)
-
         image.crop!(
           element.rectangle.x,
           element.rectangle.y,
@@ -13,11 +12,11 @@ module DotDiff
           height(element, image)
         )
 
-        image.save(cropped_file)
+        image.write(cropped_file)
       end
 
-      def load_image(image_file)
-        ::ChunkyPNG::Image.from_file(image_file)
+      def load_image(file)
+        Magick::Image.read(file).first
       end
 
       def height(element, image)
