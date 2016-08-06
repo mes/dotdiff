@@ -12,9 +12,9 @@ class Snappy
   end
 end
 
-class MockChunkyPNG
+class MockRMagick
   def crop!(x,y,w,h); end
-  def save(file);  end
+  def write(file);  end
   def width; end
   def height; end
 end
@@ -23,11 +23,11 @@ RSpec.describe DotDiff::Image::Cropper do
   subject { Snappy.new }
 
   let(:element) { DotDiff::ElementMeta.new(MockPage.new, MockElement.new) }
-  let(:mock_png) { MockChunkyPNG.new }
+  let(:mock_png) { MockRMagick.new }
 
   describe '#load_image' do
     it 'calls chunky_png image from file' do
-      expect(ChunkyPNG::Image).to receive(:from_file).with('/home/se/full.png').once
+      expect(Magick::Image).to receive(:read).with('/home/se/full.png').once.and_return([])
       subject.send(:load_image, '/home/se/full.png')
     end
   end
@@ -48,7 +48,7 @@ RSpec.describe DotDiff::Image::Cropper do
       expect(subject).to receive(:height).with(element, mock_png).and_return(14).once
 
       expect(mock_png).to receive(:crop!).with(1,2,13,14).once
-      expect(mock_png).to receive(:save).with('/tmp/T/cropped.png').once
+      expect(mock_png).to receive(:write).with('/tmp/T/cropped.png').once
 
       subject.crop_and_resave(element)
     end
