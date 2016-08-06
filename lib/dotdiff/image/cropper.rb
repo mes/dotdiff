@@ -21,9 +21,10 @@ module DotDiff
 
       def height(element, image)
         element_height = element.rectangle.height + element.rectangle.y
+        image_height = image.rows
 
-        if element_height > image.height
-          image.height - element.rectangle.y
+        if element_height > image_height
+          image_height - element.rectangle.y
         else
           element.rectangle.height
         end
@@ -31,9 +32,10 @@ module DotDiff
 
       def width(element, image)
         element_width = element.rectangle.width + element.rectangle.x
+        image_width = image.columns
 
-        if element_width > image.width
-          image.width - element.rectangle.x
+        if element_width > image_width
+          image_width - element.rectangle.x
         else
           element.rectangle.width
         end

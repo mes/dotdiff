@@ -15,8 +15,8 @@ end
 class MockRMagick
   def crop!(x,y,w,h); end
   def write(file);  end
-  def width; end
-  def height; end
+  def columns; end
+  def rows; end
 end
 
 RSpec.describe DotDiff::Image::Cropper do
@@ -26,7 +26,7 @@ RSpec.describe DotDiff::Image::Cropper do
   let(:mock_png) { MockRMagick.new }
 
   describe '#load_image' do
-    it 'calls chunky_png image from file' do
+    it 'calls rgmagick image read' do
       expect(Magick::Image).to receive(:read).with('/home/se/full.png').once.and_return([])
       subject.send(:load_image, '/home/se/full.png')
     end
@@ -61,7 +61,7 @@ RSpec.describe DotDiff::Image::Cropper do
       let(:rect) {{ 'top' => -180, 'left' => 0, 'width' => 800, 'height' => 1400 }}
 
       it 'returns the image height minus the top point' do
-        allow(mock_png).to receive(:height).and_return(1200)
+        allow(mock_png).to receive(:rows).and_return(1200)
         expect(subject.height(element, mock_png)).to eq 1380
       end
     end
@@ -70,7 +70,7 @@ RSpec.describe DotDiff::Image::Cropper do
       let(:rect) {{ 'top' => -180, 'left' => 0, 'width' => 500, 'height' => 800 }}
 
       it 'returns the element height' do
-        allow(mock_png).to receive(:height).and_return(1200)
+        allow(mock_png).to receive(:rows).and_return(1200)
         expect(subject.height(element, mock_png)).to eq 800
       end
     end
@@ -83,7 +83,7 @@ RSpec.describe DotDiff::Image::Cropper do
       let(:rect) {{ 'top' => -180, 'left' => -30, 'width' => 731, 'height' => 1200 }}
 
       it 'returns the image width minus the left point' do
-        allow(mock_png).to receive(:width).and_return(700)
+        allow(mock_png).to receive(:columns).and_return(700)
         expect(subject.width(element, mock_png)).to eq 730
       end
     end
@@ -92,7 +92,7 @@ RSpec.describe DotDiff::Image::Cropper do
       let(:rect) {{ 'top' => -180, 'left' => -20, 'width' => 800, 'height' => 800 }}
 
       it 'returns the element width' do
-        allow(mock_png).to receive(:width).and_return(850)
+        allow(mock_png).to receive(:columns).and_return(850)
         expect(subject.width(element, mock_png)).to eq 800
       end
     end
