@@ -6,6 +6,7 @@ RSpec.describe DotDiff::Snapshot do
 
   before do
     allow(Dir).to receive(:tmpdir).and_return('/tmp/T')
+    allow(DotDiff).to receive(:failure_image_path).and_return("/tmp/failures")
     allow(DotDiff).to receive(:image_store_path).and_return('/home/se/images')
   end
 
@@ -42,6 +43,18 @@ RSpec.describe DotDiff::Snapshot do
 
     it 'returns the name without the extension' do
       expect(subject.base_filename(false)).to eq 'CancellationDialog'
+    end
+  end
+
+  describe '#failure_path' do
+    it 'returns dotdiff and subdir joined' do
+      expect(subject.failure_path).to eq '/tmp/failures/testy'
+    end
+  end
+
+  describe '#failure_file' do
+    it 'returns the failure_path and filename with diff extension' do
+      expect(subject.failure_file).to eq '/tmp/failures/testy/CancellationDialog.diff'
     end
   end
 
