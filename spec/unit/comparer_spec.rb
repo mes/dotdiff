@@ -133,11 +133,11 @@ RSpec.describe DotDiff::Comparer do
 
         it 'returns false' do
           expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
-           .with('/home/se/images/test.png', '/tmp/new.png').once
+            .with('/home/se/images/test.png', '/tmp/new.png').once
 
           expect(FileUtils).to receive(:mkdir_p).with('/tmp/fails/images').once
           expect(FileUtils).to receive(:mv)
-            .with('/tmp/new.png', '/tmp/fails/images/test.diff', force: true)
+            .with('/tmp/new.png', '/tmp/fails/images/test.diff.png', force: true)
 
           expect(subject.send(:compare, '/tmp/new.png')).to eq(
             [false, 'FAILED: 120px pixel different']

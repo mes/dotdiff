@@ -54,7 +54,7 @@ RSpec.describe DotDiff::Snapshot do
 
   describe '#failure_file' do
     it 'returns the failure_path and filename with diff extension' do
-      expect(subject.failure_file).to eq '/tmp/failures/testy/CancellationDialog.diff'
+      expect(subject.failure_file).to eq '/tmp/failures/testy/CancellationDialog.diff.png'
     end
   end
 
