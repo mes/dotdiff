@@ -48,10 +48,8 @@ module DotDiff
       result.run(snapshot.basefile, compare_to_image)
 
       if result.failed? && DotDiff.failure_image_path
-        failure_path = File.join(DotDiff.failure_image_path, snapshot.subdir)
-
-        FileUtils.mkdir_p(failure_path)
-        FileUtils.mv(compare_to_image, File.join(failure_path, snapshot.base_filename), force: true)
+        FileUtils.mkdir_p(snapshot.failure_path)
+        FileUtils.mv(compare_to_image, snapshot.failure_file, force: true)
       end
 
       [result.passed?, result.message]

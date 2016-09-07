@@ -40,6 +40,14 @@ module DotDiff
       rtn_file
     end
 
+    def failure_path
+      File.join(DotDiff.failure_image_path, subdir)
+    end
+
+    def failure_file
+      File.join(failure_path, "#{base_filename(false)}.diff" )
+    end
+
     def capture_from_browser(hide_and_show = true, element_handler = ElementHandler.new(page))
       if hide_and_show
         element_handler.hide
