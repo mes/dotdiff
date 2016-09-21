@@ -113,9 +113,11 @@ RSpec.describe DotDiff::Comparer do
       end
 
       context 'when images match' do
+        before { allow(DotDiff).to receive(:failure_image_path).and_return(nil) }
+
         it 'calls command wrapper' do
           expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
-           .with('/home/se/images/test.png', '/tmp/new.png').once
+            .with('/home/se/images/test.png', '/tmp/new.png', '/images/test.diff.png').once
 
           expect(FileUtils).to receive(:mv).exactly(0).times
           expect(subject.send(:compare, '/tmp/new.png')).to eq [true, nil]
@@ -123,6 +125,8 @@ RSpec.describe DotDiff::Comparer do
       end
 
       context 'when the images dont match' do
+        let(:diff_file) { '/tmp/fails/images/test.diff.png' }
+
         before do
           command_wrapper.instance_variable_set('@ran_checks', true)
           command_wrapper.instance_variable_set('@failed', true)
@@ -133,7 +137,7 @@ RSpec.describe DotDiff::Comparer do
 
         it 'returns false' do
           expect_any_instance_of(DotDiff::CommandWrapper).to receive(:run)
-            .with('/home/se/images/test.png', '/tmp/new.png').once
+            .with('/home/se/images/test.png', '/tmp/new.png', diff_file).once
 
           expect(FileUtils).to receive(:mkdir_p).with('/tmp/fails/images').once
           expect(FileUtils).to receive(:mv)

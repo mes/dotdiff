@@ -43,7 +43,7 @@ module DotDiff
     end
 
     def failure_path
-      File.join(DotDiff.failure_image_path, subdir)
+      File.join(DotDiff.failure_image_path.to_s, subdir)
     end
 
     def new_file

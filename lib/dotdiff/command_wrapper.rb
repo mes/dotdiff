@@ -4,8 +4,8 @@ module DotDiff
   class CommandWrapper
     attr_reader :message
 
-    def run(base_image, new_image)
-      output = run_command(base_image, new_image)
+    def run(base_image, new_image, diff_image_path)
+      output = run_command(base_image, new_image, diff_image_path)
 
       @ran_checks = true
 
@@ -39,13 +39,14 @@ module DotDiff
     private
 
     # For the tests
-    def run_command(base_image, new_image)
-      `#{command(base_image, new_image)}`.strip
+    def run_command(base_image, new_image, diff_image_path)
+      `#{command(base_image, new_image, diff_image_path)}`.strip
     end
 
-    def command(base_image, new_image)
+    def command(base_image, new_image, diff_image_path)
       "#{DotDiff.image_magick_diff_bin} #{DotDiff.image_magick_options} " \
-      "#{Shellwords.escape(base_image)} #{Shellwords.escape(new_image)} /dev/null 2>&1"
+      "#{Shellwords.escape(base_image)} #{Shellwords.escape(new_image)} " \
+      "#{Shellwords.escape(diff_image_path)} 2>&1"
     end
   end
 end
