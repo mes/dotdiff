@@ -46,8 +46,12 @@ module DotDiff
       File.join(DotDiff.failure_image_path, subdir)
     end
 
-    def failure_file
+    def new_file
       File.join(failure_path, "#{base_filename(false)}.new.#{IMAGE_EXT}" )
+    end
+
+    def diff_file
+      File.join(failure_path, "#{base_filename(false)}.diff.#{IMAGE_EXT}")
     end
 
     def capture_from_browser(hide_and_show = true, element_handler = ElementHandler.new(page))
