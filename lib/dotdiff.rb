@@ -14,11 +14,11 @@ require 'dotdiff/comparer'
 
 module DotDiff
   class << self
-    attr_accessor :image_magick_diff_bin, :resave_base_image, :failure_image_path,
+    attr_accessor :resave_base_image, :failure_image_path,
       :image_store_path, :overwrite_on_resave, :xpath_elements_to_hide,
       :max_wait_time
 
-    attr_writer :image_magick_options, :pixel_threshold
+    attr_writer :image_magick_options, :pixel_threshold, :image_magick_diff_bin
 
     def configure
       yield self
@@ -34,6 +34,10 @@ module DotDiff
 
     def image_magick_options
       @image_magick_options ||= '-fuzz 5% -metric AE'
+    end
+
+    def image_magick_diff_bin
+      @image_magick_diff_bin.to_s.strip
     end
 
     def pixel_threshold

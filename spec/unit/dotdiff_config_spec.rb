@@ -23,6 +23,13 @@ RSpec.describe 'Dotdiff configuration' do
     end
   end
 
+  describe '#image_magick_diff_bin' do
+    it 'trims any newlines' do
+      DotDiff.image_magick_diff_bin = "/usr/bin/compare\n"
+      expect(DotDiff.image_magick_diff_bin).to eq '/usr/bin/compare'
+    end
+  end
+
   describe '#image_magick_options' do
     let(:opts) { '-fuzz 10% -metric phash' }
 
