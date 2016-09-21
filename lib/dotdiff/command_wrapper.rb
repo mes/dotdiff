@@ -4,16 +4,23 @@ module DotDiff
   class CommandWrapper
     attr_reader :message
 
-    def run(base_image, new_image)
-      output = `#{command(base_image, new_image)}`
+    def run(base_image, new_image, diff_image_path)
+      output = run_command(base_image, new_image, diff_image_path)
 
       @ran_checks = true
 
-      if output.include?('PASS:')
-        @failed = false
-      else
+      begin
+        pixels = Float(output)
+
+        if pixels && pixels <= DotDiff.pixel_threshold
+          @failed = false
+        else
+          @failed = true
+          @message = "Images are #{pixels} pixels different"
+        end
+      rescue ArgumentError => e
         @failed = true
-        @message = output.split("\n").join(' ')
+        @message = output
       end
     end
 
@@ -31,9 +38,15 @@ module DotDiff
 
     private
 
-    def command(base_image, new_image)
-      "#{DotDiff.perceptual_diff_bin} #{Shellwords.escape(base_image)} "\
-        "#{Shellwords.escape(new_image)} -verbose"
+    # For the tests
+    def run_command(base_image, new_image, diff_image_path)
+      `#{command(base_image, new_image, diff_image_path)}`.strip
+    end
+
+    def command(base_image, new_image, diff_image_path)
+      "#{DotDiff.image_magick_diff_bin} #{DotDiff.image_magick_options} " \
+      "#{Shellwords.escape(base_image)} #{Shellwords.escape(new_image)} " \
+      "#{Shellwords.escape(diff_image_path)} 2>&1"
     end
   end
 end

@@ -45,11 +45,11 @@ module DotDiff
 
     def compare(compare_to_image)
       result = CommandWrapper.new
-      result.run(snapshot.basefile, compare_to_image)
+      result.run(snapshot.basefile, compare_to_image, snapshot.diff_file)
 
       if result.failed? && DotDiff.failure_image_path
         FileUtils.mkdir_p(snapshot.failure_path)
-        FileUtils.mv(compare_to_image, snapshot.failure_file, force: true)
+        FileUtils.mv(compare_to_image, snapshot.new_file, force: true)
       end
 
       [result.passed?, result.message]

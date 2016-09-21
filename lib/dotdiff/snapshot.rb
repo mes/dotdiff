@@ -2,7 +2,7 @@ module DotDiff
   class Snapshot
     include Image::Cropper
 
-    attr_reader :base_filename, :subdir, :rootdir, :page
+    attr_reader :base_filename, :subdir, :rootdir, :page, :use_custom_screenshot
 
     IMAGE_EXT = 'png'.freeze
 
@@ -12,6 +12,8 @@ module DotDiff
       @subdir = opts[:subdir].to_s
       @rootdir = opts[:rootdir].to_s
       @page = opts[:page]
+      @fullscreen = opts[:fullscreen_file]
+      @use_custom_screenshot = opts[:use_custom_screenshot]
     end
 
     def fullscreen_file
@@ -41,14 +43,20 @@ module DotDiff
     end
 
     def failure_path
-      File.join(DotDiff.failure_image_path, subdir)
+      File.join(DotDiff.failure_image_path.to_s, subdir)
     end
 
-    def failure_file
+    def new_file
       File.join(failure_path, "#{base_filename(false)}.new.#{IMAGE_EXT}" )
     end
 
+    def diff_file
+      File.join(failure_path, "#{base_filename(false)}.diff.#{IMAGE_EXT}")
+    end
+
     def capture_from_browser(hide_and_show = true, element_handler = ElementHandler.new(page))
+      return fullscreen_file if use_custom_screenshot
+
       if hide_and_show
         element_handler.hide
         page.save_screenshot(fullscreen_file)

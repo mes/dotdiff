@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 RSpec.describe DotDiff::Snapshot do
-  let(:options) {{ filename: 'CancellationDialog', subdir: 'testy', page: MockPage.new }}
+  let(:options) {{
+    filename: 'CancellationDialog',
+    subdir: 'testy',
+    page: MockPage.new
+  }}
+
   subject { DotDiff::Snapshot.new(options) }
 
   before do
@@ -11,10 +16,16 @@ RSpec.describe DotDiff::Snapshot do
   end
 
   describe '#initialize' do
+    let(:opts) { options.merge(fullscreen_file: '/somedir', use_custom_screenshot: true) }
+
+    subject { DotDiff::Snapshot.new(opts) }
+
     it 'initializes base_filename, subdir and rootdir' do
       expect(subject.base_filename).to eq 'CancellationDialog.png'
       expect(subject.subdir).to eq 'testy'
       expect(subject.rootdir).to eq '/home/se/images'
+      expect(subject.fullscreen_file).to eq '/somedir'
+      expect(subject.use_custom_screenshot).to be_truthy
     end
   end
 
@@ -52,9 +63,15 @@ RSpec.describe DotDiff::Snapshot do
     end
   end
 
-  describe '#failure_file' do
+  describe '#new_file' do
+    it 'returns the failure_path and filename with new extension' do
+      expect(subject.new_file).to eq '/tmp/failures/testy/CancellationDialog.new.png'
+    end
+  end
+
+  describe '#diff_file' do
     it 'returns the failure_path and filename with diff extension' do
-      expect(subject.failure_file).to eq '/tmp/failures/testy/CancellationDialog.new.png'
+      expect(subject.diff_file).to eq '/tmp/failures/testy/CancellationDialog.diff.png'
     end
   end
 
@@ -63,6 +80,16 @@ RSpec.describe DotDiff::Snapshot do
       expect(subject).to receive(:fullscreen_file).and_return('/tmp/T/basefile.png').once
       expect(subject.page).to receive(:save_screenshot).with('/tmp/T/basefile.png').once
       subject.capture_from_browser
+    end
+
+    context 'use_custom_screenshot is true' do
+      let(:opts) { options.merge(fullscreen_file: '/somedir/file.png', use_custom_screenshot: true) }
+      subject { DotDiff::Snapshot.new(opts) }
+
+      it 'returns fullscreen_file path when use_custom_screenshot is true' do
+        expect(subject.page).to receive(:save_screenshot).with('/tmp/T/basefile.png').exactly(0).times
+        expect(subject.capture_from_browser).to eq '/somedir/file.png'
+      end
     end
   end
 
