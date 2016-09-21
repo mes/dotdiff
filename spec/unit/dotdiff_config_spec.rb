@@ -23,6 +23,19 @@ RSpec.describe 'Dotdiff configuration' do
     end
   end
 
+  describe '#image_magick_options' do
+    let(:opts) { '-fuzz 10% -metric phash' }
+
+    it 'returns the default options' do
+      expect(subject.image_magick_options).to eq '-fuzz 5% -metric AE'
+    end
+
+    it 'returns the user set options' do
+      DotDiff.image_magick_options = opts
+      expect(subject.image_magick_options).to eq opts
+    end
+  end
+
   describe '#image_store_path' do
     let(:path) { '/tmp/image_store_path' }
 
