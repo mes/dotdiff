@@ -18,7 +18,7 @@ module DotDiff
       :image_store_path, :overwrite_on_resave, :xpath_elements_to_hide,
       :max_wait_time
 
-    attr_writer :image_magick_options
+    attr_writer :image_magick_options, :pixel_threshold
 
     def configure
       yield self
@@ -34,6 +34,10 @@ module DotDiff
 
     def image_magick_options
       @image_magick_options ||= '-fuzz 5% -metric AE'
+    end
+
+    def pixel_threshold
+      @pixel_threshold ||= 100
     end
 
     def max_wait_time

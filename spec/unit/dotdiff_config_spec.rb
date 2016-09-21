@@ -36,6 +36,17 @@ RSpec.describe 'Dotdiff configuration' do
     end
   end
 
+  describe 'pixel_threshold' do
+    it 'returns the default 100 pixels' do
+      expect(subject.pixel_threshold).to eq 100
+    end
+
+    it 'returns the user defined value' do
+      DotDiff.pixel_threshold = 120
+      expect(subject.pixel_threshold).to eq 120
+    end
+  end
+
   describe '#image_store_path' do
     let(:path) { '/tmp/image_store_path' }
 
