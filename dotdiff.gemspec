@@ -20,7 +20,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "rmagick", '~> 2.15'
+  if RUBY_PLATFORM == 'java'
+    spec.add_runtime_dependency "rmagick4j", '~> 0.4.0'
+  else
+    spec.add_runtime_dependency "rmagick", '~> 2.15'
+  end
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
