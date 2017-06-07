@@ -3,11 +3,14 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'dotdiff/version'
 
+is_java = RUBY_PLATFORM == 'java'
+
 Gem::Specification.new do |spec|
   spec.name          = "dotdiff"
   spec.version       = DotDiff::VERSION
   spec.authors       = ["Jon Normington"]
   spec.email         = ["jnormington@users.noreply.github.com"]
+  spec.platform      = 'java' if is_java
 
   spec.summary       = "Preceptual diff wrapper for capybara and rspec image regression specs"
   spec.description   = [spec.summary, "which is great for graphs and charts where checking"\
@@ -20,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  if RUBY_PLATFORM == 'java'
+  if is_java
     spec.add_runtime_dependency "rmagick4j", '~> 0.4.0'
   else
     spec.add_runtime_dependency "rmagick", '~> 2.15'
