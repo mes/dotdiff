@@ -12,7 +12,10 @@ different display suchas username or user specific details, but only for full pa
 
 ## Installation
 
+
 Add this line to your application's Gemfile:
+
+This is the same for JRuby platform as well (both MRI and JRuby versions of gem is uploaded)
 
 ```ruby
 gem 'dotdiff'
@@ -84,6 +87,7 @@ The only difference for the element specific is passing a specific element in th
 | max_wait_time          | This is similar to the Capybara#default_max_wait_time if you have a high value such as 10, as its possible that the  global xpath_elements_to_hide might not always exist it will wait the full time - therefore you can drop it for the hiding and showing of the elements.  In this example it would wait up 20 seconds in total 10 for hiding and 10 seconds for re-showing - that is if the element isn't even going to be present on the page. | 2                                                     | Capybara#default_max_wait_time | No       |
 | pixel_threshold       |  This validates the output from compare is within your specified threshold    | 120  | 100  | No      |
 | image_magick_options  |  This allows you to pass some custom options to image magick    | '-fuzz 10% -metric RSME'  | '-fuzz 5% -metric AE'  | No      |
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/jnormington/dotdiff.
