@@ -45,7 +45,7 @@ module DotDiff
 
     def compare(compare_to_image)
       result = CommandWrapper.new
-      result.run(snapshot.basefile, compare_to_image, snapshot.diff_file)
+      result.run(snapshot.basefile, 'tmp/capybara/' + compare_to_image, snapshot.diff_file)
 
       if result.failed? && DotDiff.failure_image_path
         FileUtils.mkdir_p(snapshot.failure_path)
