@@ -17,7 +17,7 @@ module DotDiff
           '+' + element.rectangle.y.to_s
 
         image.crop crop_area
-        image.write(cropped_file)
+        image.write('tmp/capybara/' + cropped_file)
       end
 
       def load_image(file)
