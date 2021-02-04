@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   if is_java
     spec.add_runtime_dependency "rmagick4j", '~> 0.4.0'
   else
-    spec.add_runtime_dependency "mini_magick", '~> 4.8.0'
+    spec.add_runtime_dependency "mini_magick", '~> 4.9.4'
   end
 
   spec.add_development_dependency "bundler", "~> 1.11"
